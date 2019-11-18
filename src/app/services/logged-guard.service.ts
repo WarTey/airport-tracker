@@ -14,7 +14,7 @@ export class LoggedGuardService implements CanActivate {
                 firebase.auth().onAuthStateChanged(
                     (user) => {
                         if (user) {
-                            this.router.navigate(['']);
+                            this.router.navigate(['not-found']);
                             resolve(false);
                         } else {
                             resolve(true);

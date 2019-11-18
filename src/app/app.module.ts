@@ -11,10 +11,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoggedGuardService } from './services/logged-guard.service';
 import { NotLoggedGuardService } from './services/not-logged-guard.service';
 import { ToastrService } from './services/toastr.service';
+import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
 
 const appRoutes: Routes = [
     { path: 'connexion', canActivate: [LoggedGuardService], component: SignInComponent },
-    { path: 'inscription', canActivate: [LoggedGuardService], component: SignUpComponent }
+    { path: 'inscription', canActivate: [LoggedGuardService], component: SignUpComponent },
+    { path: 'not-found', component: FourOhFourComponent },
+    { path: '**', redirectTo: 'not-found' }
 ];
 
 @NgModule({
@@ -22,7 +25,8 @@ const appRoutes: Routes = [
         AppComponent,
         HeaderComponent,
         SignInComponent,
-        SignUpComponent
+        SignUpComponent,
+        FourOhFourComponent
     ],
     imports: [
         BrowserModule,
