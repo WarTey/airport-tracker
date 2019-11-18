@@ -4,6 +4,13 @@ import Map from 'ol/Map';
 import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
+import Feature from 'ol/Feature';
+import Point from 'ol/geom/Point';
+import * as proj from 'ol/proj';
+import Vector from 'ol/source/Vector';
+import VectorL from 'ol/layer/Vector';
+import Style from 'ol/style/Style';
+import Icon from 'ol/style/Icon';
 
 @Component({
   selector: 'app-airport-list',
@@ -35,5 +42,19 @@ export class AirportListComponent implements OnInit {
                 zoom: 2
             })
         });
+
+        const marker = new Feature({
+            geometry: new Point(
+                proj.fromLonLat([-73.79, 40.6437])
+            ),  // Cordinates of New York's Town Hall
+        });
+
+        const vectorSource = new Vector({
+            features: [marker]
+        });
+        const markerVectorLayer = new VectorL({
+            source: vectorSource,
+        });
+        this.map.addLayer(markerVectorLayer);
     }
 }

@@ -2,4 +2,9 @@
 
 <div id="map" class="map"></div>
 
-<p *ngFor="let airport of airportList, let i = index"> Airport code n° {{ i }}: {{ airport.code | json }}</p>
+<div *ngFor="let airport of airportList, let i = index">
+    <p> Airport code n° {{ i }}: {{ airport.code | json }}</p>
+    <p>Latittude : {{airport.lat | json }}</p>
+    <p>Longitude : {{airport.lon | json }}</p>
+</div>
+
