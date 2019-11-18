@@ -10,6 +10,7 @@ import { AuthService } from './services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoggedGuardService } from './services/logged-guard.service';
 import { NotLoggedGuardService } from './services/not-logged-guard.service';
+import { ToastrService } from './services/toastr.service';
 
 const appRoutes: Routes = [
     { path: 'connexion', canActivate: [LoggedGuardService], component: SignInComponent },
@@ -32,7 +33,8 @@ const appRoutes: Routes = [
     providers: [
         AuthService,
         LoggedGuardService,
-        NotLoggedGuardService
+        NotLoggedGuardService,
+        ToastrService
     ],
     bootstrap: [AppComponent]
 })

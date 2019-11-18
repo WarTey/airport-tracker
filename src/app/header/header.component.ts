@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
 import * as firebase from 'firebase';
+import { ToastrService } from '../services/toastr.service';
 
 @Component({
     selector: 'app-header',
@@ -12,7 +12,7 @@ import * as firebase from 'firebase';
 export class HeaderComponent implements OnInit {
     isAuth: boolean;
 
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private authService: AuthService, private toastr: ToastrService) {}
 
     ngOnInit() {
         firebase.auth().onAuthStateChanged(
@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit {
     }
 
     onSignOut() {
+        this.toastr.toastrSuccess('Déconnexion', 'À bientôt de vous revoir.');
         this.authService.signOut();
     }
 }
