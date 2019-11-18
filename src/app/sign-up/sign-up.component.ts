@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { ConfirmPasswordValidator } from '../validators/confirm-password.validator';
 
 @Component({
     selector: 'app-sign-up',
@@ -23,7 +24,8 @@ export class SignUpComponent implements OnInit {
         this.signUpForm = this.formBuilder.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.pattern(/[0-9a-zA-Z]{6,}/)]],
-        });
+            confirmPassword: ['', [Validators.required, Validators.pattern(/[0-9a-zA-Z]{6,}/)]]
+        }, { validators: ConfirmPasswordValidator });
     }
 
     onSubmit() {
