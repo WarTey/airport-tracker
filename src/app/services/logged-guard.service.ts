@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import * as firebase from 'firebase';
 
 @Injectable()
-export class AuthGuardService implements CanActivate {
+export class LoggedGuardService implements CanActivate {
     constructor(private authService: AuthService, private router: Router) { }
 
     canActivate(): Observable<boolean> | Promise<boolean> | boolean {
@@ -14,10 +14,10 @@ export class AuthGuardService implements CanActivate {
                 firebase.auth().onAuthStateChanged(
                     (user) => {
                         if (user) {
-                            resolve(true);
-                        } else {
-                            this.router.navigate(['connexion']);
+                            this.router.navigate(['']);
                             resolve(false);
+                        } else {
+                            resolve(true);
                         }
                     }
                 );
