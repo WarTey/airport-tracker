@@ -6,11 +6,10 @@ import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
-import * as proj from 'ol/proj';
+import { fromLonLat } from 'ol/proj.js';
 import Vector from 'ol/source/Vector';
 import VectorL from 'ol/layer/Vector';
-import Style from 'ol/style/Style';
-import Icon from 'ol/style/Icon';
+import * as style from 'ol/style';
 
 @Component({
   selector: 'app-airport-list',
@@ -21,6 +20,7 @@ export class AirportListComponent implements OnInit {
 
     airportList: any;
     map: any;
+    marker: any;
 
     constructor(http: HttpClient) {
         // tslint:disable-next-line:max-line-length
@@ -43,14 +43,22 @@ export class AirportListComponent implements OnInit {
             })
         });
 
-        const marker = new Feature({
+        this.marker = new Feature({
             geometry: new Point(
-                proj.fromLonLat([-73.79, 40.6437])
-            ),  // Cordinates of New York's Town Hall
+                fromLonLat([-73.79, 40.6437])
+            ),
         });
 
+        this.marker.setStyle(new style.Style({
+            image: new style.Icon(({
+                color: '#0000ff',
+                crossOrigin: 'anonymous',
+                src: 'assets/airplane.png'
+            }))
+        }));
+
         const vectorSource = new Vector({
-            features: [marker]
+            features: [ this.marker]
         });
         const markerVectorLayer = new VectorL({
             source: vectorSource,
