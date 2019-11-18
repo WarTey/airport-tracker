@@ -8,6 +8,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { AuthService } from './services/auth.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthGuardService } from './services/auth-guard.service';
 
 const appRoutes: Routes = [
     { path: 'connexion', component: SignInComponent },
@@ -28,7 +29,8 @@ const appRoutes: Routes = [
         ReactiveFormsModule
     ],
     providers: [
-        AuthService
+        AuthService,
+        AuthGuardService
     ],
     bootstrap: [AppComponent]
 })
