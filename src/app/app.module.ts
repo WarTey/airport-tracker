@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import {HttpClientModule} from '@angular/common/http';
+
 import { RouterModule, Routes } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -11,8 +13,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoggedGuardService } from './services/logged-guard.service';
 import { NotLoggedGuardService } from './services/not-logged-guard.service';
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
+import { AirportListComponent } from './airport-list/airport-list.component';
 
 const appRoutes: Routes = [
+    { path: '', component: AirportListComponent },
     { path: 'connexion', canActivate: [LoggedGuardService], component: SignInComponent },
     { path: 'inscription', canActivate: [LoggedGuardService], component: SignUpComponent },
     { path: 'not-found', component: FourOhFourComponent },
@@ -25,10 +29,12 @@ const appRoutes: Routes = [
         HeaderComponent,
         SignInComponent,
         SignUpComponent,
-        FourOhFourComponent
+        FourOhFourComponent,
+        AirportListComponent
     ],
     imports: [
         BrowserModule,
+        HttpClientModule,
         FormsModule,
         RouterModule.forRoot(appRoutes),
         ReactiveFormsModule
