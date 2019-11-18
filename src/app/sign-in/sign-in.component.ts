@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { ToastrService } from '../services/toastr.service';
 
 @Component({
     selector: 'app-sign-in',
@@ -11,9 +12,11 @@ import { Router } from '@angular/router';
 
 export class SignInComponent implements OnInit {
     signInForm: FormGroup;
-    errorMessage: string;
 
-    constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }
+    constructor(private formBuilder: FormBuilder,
+                private authService: AuthService,
+                private router: Router,
+                private toastr: ToastrService) { }
 
     ngOnInit() {
         this.initForm();
@@ -29,10 +32,11 @@ export class SignInComponent implements OnInit {
     onSubmit() {
         this.authService.signIn(this.signInForm.value.email, this.signInForm.value.password).then(
             () => {
+                this.toastr.toastrSuccess('Connexion', 'Bienvenue ' + this.signInForm.value.email + ' sur Airport Tracker.');
                 this.router.navigate(['']);
             },
-            (error) => {
-                this.errorMessage = error;
+            () => {
+                this.toastr.toastrError('Connexion', 'Le compte ' + this.signInForm.value.email + ' n\'existe pas ou a été supprimé.');
             }
         );
     }
