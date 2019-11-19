@@ -10,6 +10,8 @@ import { fromLonLat } from 'ol/proj.js';
 import Vector from 'ol/source/Vector';
 import VectorL from 'ol/layer/Vector';
 import * as style from 'ol/style';
+import {AirportsService} from '../services/airports.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-airport-list',
@@ -18,51 +20,58 @@ import * as style from 'ol/style';
 })
 export class AirportListComponent implements OnInit {
 
-    airportList: any;
+    airportList: any[];
+    airportsSubscription: Subscription;
     map: any;
-    marker: any;
+    marker: any[] = [];
+    airport: any;
 
-    constructor(http: HttpClient) {
-        // tslint:disable-next-line:max-line-length
-        http.get('https://gist.githubusercontent.com/tdreyno/4278655/raw/7b0762c09b519f40397e4c3e100b097d861f5588/airports.json').subscribe( data => { this.airportList = data; });
+    constructor(private http: HttpClient, private airportsService: AirportsService) {
     }
 
     ngOnInit() {
-        this.map = new Map({
-            target: 'map',
-            layers: [
-                new TileLayer({
-                    source: new XYZ({
-                        url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        this.airportsSubscription = this.airportsService.airportsSubject.subscribe(
+            (airports: any[]) => {
+                this.airportList = airports;
+
+                this.map = new Map({
+                    target: 'map',
+                    layers: [
+                        new TileLayer({
+                            source: new XYZ({
+                                url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                            })
+                        })
+                    ],
+                    view: new View({
+                        center: [0, 0],
+                        zoom: 2
                     })
-                })
-            ],
-            view: new View({
-                center: [0, 0],
-                zoom: 2
-            })
-        });
+                });
+                for(const element in this.airportList) {
+                    this.marker[element] = new Feature({
+                        geometry: new Point(
+                            fromLonLat([ this.airportList[element].lon, this.airportList[element].lat])
+                        ),
+                    });
 
-        this.marker = new Feature({
-            geometry: new Point(
-                fromLonLat([-73.79, 40.6437])
-            ),
-        });
+                    this.marker[element].setStyle(new style.Style({
+                        image: new style.Icon(({
+                            color: '#0000ff',
+                            crossOrigin: 'anonymous',
+                            src: 'assets/airplane.png',
+                        }))
+                    }));
 
-        this.marker.setStyle(new style.Style({
-            image: new style.Icon(({
-                color: '#0000ff',
-                crossOrigin: 'anonymous',
-                src: 'assets/airplane.png'
-            }))
-        }));
-
-        const vectorSource = new Vector({
-            features: [ this.marker]
-        });
-        const markerVectorLayer = new VectorL({
-            source: vectorSource,
-        });
-        this.map.addLayer(markerVectorLayer);
+                    const vectorSource = new Vector({
+                        features: [ this.marker[element]]
+                    });
+                    const markerVectorLayer = new VectorL({
+                        source: vectorSource,
+                    });
+                    this.map.addLayer(markerVectorLayer);
+                }
+            }
+        );
     }
 }

@@ -14,6 +14,7 @@ import { LoggedGuardService } from './services/logged-guard.service';
 import { NotLoggedGuardService } from './services/not-logged-guard.service';
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
 import { AirportListComponent } from './airport-list/airport-list.component';
+import { AirportsService } from './services/airports.service';
 
 const appRoutes: Routes = [
     { path: '', component: AirportListComponent },
@@ -42,7 +43,8 @@ const appRoutes: Routes = [
     providers: [
         AuthService,
         LoggedGuardService,
-        NotLoggedGuardService
+        NotLoggedGuardService,
+        AirportsService
     ],
     bootstrap: [AppComponent]
 })
