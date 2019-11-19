@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FlightsService } from '../../services/flights.service';
 import { Subscription } from 'rxjs';
 
@@ -11,16 +11,15 @@ import { Subscription } from 'rxjs';
 export class FlightListComponent implements OnInit {
     flightsSubscription: Subscription;
     flightList: any[];
+    @Input() airportICAO: string;
 
-    constructor(private flightsService: FlightsService) {
-        this.flightsService.getFlights('EDDF');
-    }
+    constructor(private flightsService: FlightsService) { }
 
     ngOnInit() {
+        this.flightsService.getFlights(this.airportICAO);
         this.flightsSubscription = this.flightsService.flightsSubject.subscribe(
             (flights: any[]) => {
                 this.flightList = flights;
-                console.log(this.flightList);
             }
         );
     }

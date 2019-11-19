@@ -1,1 +1,20 @@
-<p *ngFor="let post of flightList">Title {{ post | json }}</p>
+<div class="mt-5 mb-5">
+    <table datatable [dtTrigger]="flightsService.flightsSubject" class="row-border hover">
+        <thead>
+            <tr>
+                <th>Aéroport de départ</th>
+                <th>Heure de départ</th>
+                <th>Heure d'arrivée</th>
+                <th>Aéroport d'arrivé</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let flight of flightList">
+                <td>{{ flight.estDepartureAirport }}</td>
+                <td>{{ flight.firstSeen | date: 'short' }}</td>
+                <td>{{ flight.lastSeen | date: 'short' }}</td>
+                <td>{{ flight.estArrivalAirport }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

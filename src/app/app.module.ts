@@ -16,10 +16,11 @@ import { AirportListComponent } from './airport-list/airport-list.component';
 import { SingleAirportComponent } from './airport-list/single-airport/single-airport.component';
 import { FlightListComponent } from './airport-list/flight-list/flight-list.component';
 import { HttpClientModule } from '@angular/common/http';
-import {FlightsService} from './services/flights.service';
+import { FlightsService } from './services/flights.service';
+import { DataTablesModule } from 'angular-datatables';
 
 const appRoutes: Routes = [
-    { path: 'test', component: FlightListComponent },
+    { path: 'details', component: SingleAirportComponent },
     { path: 'connexion', canActivate: [LoggedGuardService], component: SignInComponent },
     { path: 'inscription', canActivate: [LoggedGuardService], component: SignUpComponent },
     { path: 'not-found', component: FourOhFourComponent },
@@ -42,7 +43,8 @@ const appRoutes: Routes = [
         FormsModule,
         RouterModule.forRoot(appRoutes),
         ReactiveFormsModule,
-        HttpClientModule
+        HttpClientModule,
+        DataTablesModule
     ],
     providers: [
         AuthService,

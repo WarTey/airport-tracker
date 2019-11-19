@@ -19,6 +19,13 @@ export class FlightsService {
             '' + icao + '&begin=' + (currentDate - 86400) + '&end=' + currentDate)
             .subscribe(data => {
                 this.flights = data;
+                this.flights = this.flights.filter(
+                    flight => flight.estArrivalAirport != null
+                );
+                for (const flight of this.flights) {
+                    flight.firstSeen = new Date(flight.firstSeen * 1000);
+                    flight.lastSeen = new Date(flight.lastSeen * 1000);
+                }
                 this.emitFlights();
             });
     }
