@@ -18,6 +18,7 @@ import { FlightListComponent } from './airport-list/flight-list/flight-list.comp
 import { HttpClientModule } from '@angular/common/http';
 import { FlightsService } from './services/flights.service';
 import { DataTablesModule } from 'angular-datatables';
+import { MapService } from './services/map.service';
 
 const appRoutes: Routes = [
     { path: 'details', component: SingleAirportComponent },
@@ -51,7 +52,8 @@ const appRoutes: Routes = [
         LoggedGuardService,
         NotLoggedGuardService,
         ToastrService,
-        FlightsService
+        FlightsService,
+        MapService
     ],
     bootstrap: [AppComponent]
 })
