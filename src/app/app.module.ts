@@ -15,8 +15,11 @@ import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
 import { AirportListComponent } from './airport-list/airport-list.component';
 import { SingleAirportComponent } from './airport-list/single-airport/single-airport.component';
 import { FlightListComponent } from './airport-list/flight-list/flight-list.component';
+import { HttpClientModule } from '@angular/common/http';
+import {FlightsService} from './services/flights.service';
 
 const appRoutes: Routes = [
+    { path: 'test', component: FlightListComponent },
     { path: 'connexion', canActivate: [LoggedGuardService], component: SignInComponent },
     { path: 'inscription', canActivate: [LoggedGuardService], component: SignUpComponent },
     { path: 'not-found', component: FourOhFourComponent },
@@ -38,13 +41,15 @@ const appRoutes: Routes = [
         BrowserModule,
         FormsModule,
         RouterModule.forRoot(appRoutes),
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        HttpClientModule
     ],
     providers: [
         AuthService,
         LoggedGuardService,
         NotLoggedGuardService,
-        ToastrService
+        ToastrService,
+        FlightsService
     ],
     bootstrap: [AppComponent]
 })
