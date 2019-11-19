@@ -12,6 +12,9 @@ import { LoggedGuardService } from './services/logged-guard.service';
 import { NotLoggedGuardService } from './services/not-logged-guard.service';
 import { ToastrService } from './services/toastr.service';
 import { FourOhFourComponent } from './four-oh-four/four-oh-four.component';
+import { AirportListComponent } from './airport-list/airport-list.component';
+import { SingleAirportComponent } from './airport-list/single-airport/single-airport.component';
+import { FlightListComponent } from './airport-list/flight-list/flight-list.component';
 
 const appRoutes: Routes = [
     { path: 'connexion', canActivate: [LoggedGuardService], component: SignInComponent },
@@ -26,7 +29,10 @@ const appRoutes: Routes = [
         HeaderComponent,
         SignInComponent,
         SignUpComponent,
-        FourOhFourComponent
+        FourOhFourComponent,
+        AirportListComponent,
+        SingleAirportComponent,
+        FlightListComponent
     ],
     imports: [
         BrowserModule,
