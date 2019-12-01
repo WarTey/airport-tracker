@@ -29,6 +29,7 @@ export class SingleAirportComponent implements OnInit, OnDestroy {
                     this.firstLoad = true;
                 } else {
                     this.mapService.changeMapCenter([this.airport.lon, this.airport.lat]);
+                    this.mapService.changeMarkerCenter([this.airport.lon, this.airport.lat]);
                 }
             }
         );
