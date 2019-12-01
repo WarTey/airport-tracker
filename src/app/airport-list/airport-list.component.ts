@@ -42,13 +42,25 @@ export class AirportListComponent implements OnInit {
 
                 // tslint:disable-next-line:forin
                 for (const element in this.airportList) {
-                    // tslint:disable-next-line:max-line-length
                     this.airportCoordinate[element] =  fromLonLat([this.airportList[element].lon, this.airportList[element].lat]);
+
+                    // version Hover :
+                    let marker;
+                    const airportName = this.airportList[element].name;
+
+                    marker = L.marker([this.airportList[element].lat, this.airportList[element].lon], {icon: myIcon}).
                     // tslint:disable-next-line:max-line-length
-                    L.marker([this.airportList[element].lat, this.airportList[element].lon], {icon: myIcon}).
-                    // tslint:disable-next-line:max-line-length
-                    bindPopup('<div>' + '<strong>' + this.airportList[element].name + '</strong>' + '<p>' + this.airportList[element].city + ', '
-                        +  this.airportList[element].state +  '<br>' + this.airportList[element].country + '</p><div/>').addTo(map);
+                    bindPopup('<div>' + '<strong>' + this.airportList[element].name + '</strong>' + '<p>' + this.airportList[element].city + ', ' +  this.airportList[element].state +  '<br>' + this.airportList[element].country + '</p><div/>').addTo(map).on('click', function(e) {
+                        markerClick(e, airportName);
+                    });
+
+                    function markerClick(e, name) {
+                        document.location.href = 'https://fr.wikipedia.org/wiki/' + name;
+                    }
+
+                    marker.on('mouseover', function(ev) {
+                        ev.target.openPopup();
+                    });
                 }
             }
         );
