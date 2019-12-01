@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { ConfirmPasswordValidator } from '../validators/confirm-password.validator';
+import { ToastrService } from '../services/toastr.service';
 
 @Component({
     selector: 'app-sign-up',
@@ -12,9 +13,11 @@ import { ConfirmPasswordValidator } from '../validators/confirm-password.validat
 
 export class SignUpComponent implements OnInit {
     signUpForm: FormGroup;
-    errorMessage: string;
 
-    constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) { }
+    constructor(private formBuilder: FormBuilder,
+                private authService: AuthService,
+                private router: Router,
+                private toastr: ToastrService) { }
 
     ngOnInit() {
         this.initForm();
@@ -32,9 +35,10 @@ export class SignUpComponent implements OnInit {
         this.authService.signUp(this.signUpForm.value.email, this.signUpForm.value.password).then(
             () => {
                 this.router.navigate(['']);
+                this.toastr.toastrSuccess('Connexion', 'Bienvenue ' + this.signUpForm.value.email + ' sur Airport Tracker.');
             },
-            (error) => {
-                this.errorMessage = error;
+            () => {
+                this.toastr.toastrError('Inscription', 'Une erreur est survenue. Il est possible que ce compte existe déjà.');
             }
         );
     }

@@ -1,0 +1,20 @@
+<div class="mt-5 mb-5">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+        <thead>
+            <tr>
+                <th>Aéroport de départ</th>
+                <th>Heure de départ</th>
+                <th>Heure d'arrivée</th>
+                <th>Aéroport d'arrivé</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let element of airport">
+                <td>{{ airportName }}</td>
+                <td>{{ element[0] | date: 'short' }}</td>
+                <td>{{ element[1] | date: 'short' }}</td>
+                <td (click)="onReload(element[2])" id="airport-dest">{{ element[3] }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
