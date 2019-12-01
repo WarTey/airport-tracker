@@ -22,6 +22,7 @@ import { MapService } from './services/map.service';
 import { AirportsService } from './services/airports.service';
 
 const appRoutes: Routes = [
+    { path: '', component: AirportListComponent },
     { path: 'details/:icao', component: SingleAirportComponent },
     { path: 'connexion', canActivate: [LoggedGuardService], component: SignInComponent },
     { path: 'inscription', canActivate: [LoggedGuardService], component: SignUpComponent },
@@ -42,6 +43,7 @@ const appRoutes: Routes = [
     ],
     imports: [
         BrowserModule,
+        HttpClientModule,
         FormsModule,
         RouterModule.forRoot(appRoutes),
         ReactiveFormsModule,
