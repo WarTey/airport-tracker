@@ -30,6 +30,10 @@ export class MapService {
         });
     }
 
+    changeMapCenter(coords: number[]) {
+        this.map.getView().setCenter(transform(coords, 'EPSG:4326', 'EPSG:3857'));
+    }
+
     loadDynamicMap(coords: number[], zoom: number) {
         this.map = new Map({
             target: 'map',

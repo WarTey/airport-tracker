@@ -1,0 +1,8 @@
+#airport-dest {
+    color: #007bff;
+}
+
+#airport-dest:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

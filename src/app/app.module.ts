@@ -19,9 +19,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { FlightsService } from './services/flights.service';
 import { DataTablesModule } from 'angular-datatables';
 import { MapService } from './services/map.service';
+import { AirportsService } from './services/airports.service';
 
 const appRoutes: Routes = [
-    { path: 'details', component: SingleAirportComponent },
+    { path: 'details/:icao', component: SingleAirportComponent },
     { path: 'connexion', canActivate: [LoggedGuardService], component: SignInComponent },
     { path: 'inscription', canActivate: [LoggedGuardService], component: SignUpComponent },
     { path: 'not-found', component: FourOhFourComponent },
@@ -53,7 +54,8 @@ const appRoutes: Routes = [
         NotLoggedGuardService,
         ToastrService,
         FlightsService,
-        MapService
+        MapService,
+        AirportsService
     ],
     bootstrap: [AppComponent]
 })
