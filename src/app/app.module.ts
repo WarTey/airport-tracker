@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
+import {HttpClientModule} from '@angular/common/http';
+
 import { RouterModule, Routes } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -22,6 +24,7 @@ import { MapService } from './services/map.service';
 import { AirportsService } from './services/airports.service';
 
 const appRoutes: Routes = [
+    { path: '', component: AirportListComponent },
     { path: 'details/:icao', component: SingleAirportComponent },
     { path: 'connexion', canActivate: [LoggedGuardService], component: SignInComponent },
     { path: 'inscription', canActivate: [LoggedGuardService], component: SignUpComponent },
@@ -42,6 +45,7 @@ const appRoutes: Routes = [
     ],
     imports: [
         BrowserModule,
+        HttpClientModule,
         FormsModule,
         RouterModule.forRoot(appRoutes),
         ReactiveFormsModule,
