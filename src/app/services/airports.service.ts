@@ -20,7 +20,7 @@ export class AirportsService {
     emitAirportArrival() {
         this.airportArrivalSubject.next(this.airportArrival);
     }
-  
+
     emitAirports() {
         this.airportsSubject.next(this.airports);
     }
@@ -52,7 +52,7 @@ export class AirportsService {
                 this.emitAirportArrival();
             });
     }
-  
+
     getAirports() {
         this.http.get<any>('https://gist.githubusercontent.com/tdreyno/4278655/raw/7b0762c09b519f40397e4c3e100b097d861f5588/airports.json')
             .subscribe(response => {

@@ -12,19 +12,15 @@ import * as L from 'leaflet';
 })
 
 export class AirportListComponent implements OnInit {
-
-    airportList: any[];
     airportsSubscription: Subscription;
-    map: any;
-    marker: any[] = [];
-    airport: any;
-    airportCoordinate: any[] = [];
+    airportCoordinate: any = [];
+    airportList: any = [];
 
     constructor(private http: HttpClient, private airportsService: AirportsService) {
     }
 
     ngOnInit() {
-
+        this.airportsService.getAirports();
         this.airportsSubscription = this.airportsService.airportsSubject.subscribe(
             (airports: any[]) => {
                 this.airportList = airports;
@@ -50,7 +46,7 @@ export class AirportListComponent implements OnInit {
 
                     marker = L.marker([this.airportList[element].lat, this.airportList[element].lon], {icon: myIcon}).
                     // tslint:disable-next-line:max-line-length
-                    bindPopup('<div>' + '<strong>' + this.airportList[element].name + '</strong>' + '<p>' + this.airportList[element].city + ', ' +  this.airportList[element].state +  '<br>' + this.airportList[element].country + '</p><div/>').addTo(map).on('click', function(e) {
+                    bindPopup('<div>' + '<strong>' + this.airportList[element].name + '</strong>' + '<p>' + this.airportList[element].city + ', ' +  this.airportList[element].state +  '<br>' + this.airportList[element].country + '</p><div/>').addTo(map).on('click', e => {
                         markerClick(e, airportName);
                     });
 
@@ -58,7 +54,7 @@ export class AirportListComponent implements OnInit {
                         document.location.href = 'https://fr.wikipedia.org/wiki/' + name;
                     }
 
-                    marker.on('mouseover', function(ev) {
+                    marker.on('mouseover', ev => {
                         ev.target.openPopup();
                     });
                 }
