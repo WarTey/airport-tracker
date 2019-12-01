@@ -4,6 +4,7 @@ import { fromLonLat } from 'ol/proj.js';
 import {AirportsService} from '../services/airports.service';
 import {Subscription} from 'rxjs';
 import * as L from 'leaflet';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-airport-list',
@@ -16,7 +17,7 @@ export class AirportListComponent implements OnInit {
     airportCoordinate: any = [];
     airportList: any = [];
 
-    constructor(private http: HttpClient, private airportsService: AirportsService) {
+    constructor(private http: HttpClient, private airportsService: AirportsService,  private router: Router) {
     }
 
     ngOnInit() {
@@ -42,16 +43,15 @@ export class AirportListComponent implements OnInit {
 
                     // version Hover :
                     let marker;
-                    const airportName = this.airportList[element].name;
+                    const airportIcao = this.airportList[element].icao;
 
                     marker = L.marker([this.airportList[element].lat, this.airportList[element].lon], {icon: myIcon}).
                     // tslint:disable-next-line:max-line-length
                     bindPopup('<div>' + '<strong>' + this.airportList[element].name + '</strong>' + '<p>' + this.airportList[element].city + ', ' +  this.airportList[element].state +  '<br>' + this.airportList[element].country + '</p><div/>').addTo(map).on('click', e => {
-                        markerClick(e, airportName);
+                        markerClick(e, airportIcao, this.router);
                     });
-
-                    function markerClick(e, name) {
-                        document.location.href = 'https://fr.wikipedia.org/wiki/' + name;
+                    function markerClick(e, icao, route) {
+                        route.navigate(['details/' + icao]);
                     }
 
                     marker.on('mouseover', ev => {
