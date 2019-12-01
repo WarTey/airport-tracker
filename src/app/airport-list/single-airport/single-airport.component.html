@@ -1,15 +1,15 @@
-<h1 class="text-center mt-3">{{ airportName }}</h1>
+<h1 class="text-center mt-3">{{ airport.name }}</h1>
 <div class="row mt-5">
     <div class="col-6">
-        <p>Code : </p>
-        <p>ICAO : </p>
-        <p>Ville : </p>
-        <p>État : </p>
-        <p>Pays : </p>
-        <p>Type : </p>
+        <p>IATA : <span class="font-italic font-weight-bolder">{{ airport.code }}</span></p>
+        <p>ICAO : <span class="font-italic font-weight-bolder">{{ airport.icao }}</span></p>
+        <p>Ville : <span class="font-italic font-weight-bolder">{{ airport.city }}</span></p>
+        <p>État : <span class="font-italic font-weight-bolder">{{ airport.state }}</span></p>
+        <p>Pays : <span class="font-italic font-weight-bolder">{{ airport.country }}</span></p>
+        <p>Type : <span class="font-italic font-weight-bolder">{{ airport.type }}</span></p>
     </div>
     <div class="col-6">
         <div id="map" class="map"></div>
     </div>
 </div>
-<app-flight-list [airportICAO]="airportICAO"></app-flight-list>
+<app-flight-list [airportICAO]="airportICAO" (eventICAO)="onReload($event)" [airportName]="airport.name"></app-flight-list>
