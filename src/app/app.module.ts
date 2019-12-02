@@ -20,6 +20,7 @@ import { FlightsService } from './services/flights.service';
 import { DataTablesModule } from 'angular-datatables';
 import { MapService } from './services/map.service';
 import { AirportsService } from './services/airports.service';
+import { FavoritesService } from './services/favorites.service';
 
 const appRoutes: Routes = [
     { path: '', component: AirportListComponent },
@@ -57,7 +58,8 @@ const appRoutes: Routes = [
         ToastrService,
         FlightsService,
         MapService,
-        AirportsService
+        AirportsService,
+        FavoritesService
     ],
     bootstrap: [AppComponent]
 })
