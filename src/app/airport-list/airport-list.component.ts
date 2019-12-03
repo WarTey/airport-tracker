@@ -15,7 +15,7 @@ import {LeafletService} from '../services/leaflet.service';
 export class AirportListComponent implements OnInit {
     airportsSubscription: Subscription;
     loading = false;
-  
+
     // Constructeur de la classe
     constructor(private http: HttpClient,
                 private airportsService: AirportsService,
@@ -37,7 +37,8 @@ export class AirportListComponent implements OnInit {
                         element.name,
                         element.city,
                         element.state,
-                        element.country);
+                        element.country,
+                        element.icao);
                 }
                 setTimeout(
                     () => {
