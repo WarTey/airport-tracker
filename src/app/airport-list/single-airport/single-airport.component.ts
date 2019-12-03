@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {AirportsService} from '../../services/airports.service';
 import {Subscription} from 'rxjs';
 import {FavoritesService} from '../../services/favorites.service';
+import {LoadingService} from '../../services/loading.service';
 
 @Component({
     selector: 'app-single-airport',
@@ -15,24 +16,33 @@ export class SingleAirportComponent implements OnInit, OnDestroy {
     airportICAO: string;
     airportSubscription: Subscription;
     airport: any = [];
-    firstLoad = false;
+    loaded = false;
 
     constructor(private mapService: MapService,
                 private route: ActivatedRoute,
                 private airportsService: AirportsService,
-                private favoritesService: FavoritesService) { }
+                private favoritesService: FavoritesService,
+                private loadingService: LoadingService) {
+        this.loadingService.updateLoading(false);
+    }
 
     ngOnInit() {
         this.airportICAO = this.route.snapshot.params.icao;
         this.airportsService.getAirportDetails(this.airportICAO);
+        this.mapService.loadStaticMap();
         this.airportSubscription = this.airportsService.airportDetailsSubject.subscribe(
             (airport: any) => {
                 this.airport = airport[0];
-                if (!this.firstLoad) {
-                    this.mapService.loadStaticMap([this.airport.lon, this.airport.lat], 10);
-                    this.firstLoad = true;
+                this.mapService.changeMapCenter([this.airport.lon, this.airport.lat]);
+                if (!this.loaded) {
+                    this.mapService.createMarker([this.airport.lon, this.airport.lat]);
+                    setTimeout(
+                        () => {
+                            this.loadingService.updateLoading(true);
+                            this.loaded = true;
+                        }, 1000
+                    );
                 } else {
-                    this.mapService.changeMapCenter([this.airport.lon, this.airport.lat]);
                     this.mapService.changeMarkerCenter([this.airport.lon, this.airport.lat]);
                 }
             }

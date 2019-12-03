@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AirportsService} from '../services/airports.service';
 import {Subscription} from 'rxjs';
-import {Router} from '@angular/router';
 import {LoadingService} from '../services/loading.service';
 import {LeafletService} from '../services/leaflet.service';
 
@@ -12,15 +11,17 @@ import {LeafletService} from '../services/leaflet.service';
     styleUrls: ['./airport-list.component.css']
 })
 
-export class AirportListComponent implements OnInit {
+export class AirportListComponent implements OnInit, OnDestroy {
     airportsSubscription: Subscription;
-    loading = false;
+    loaded = false;
 
     // Constructeur de la classe
     constructor(private http: HttpClient,
                 private airportsService: AirportsService,
                 private loadingService: LoadingService,
-                private leafletService: LeafletService) { }
+                private leafletService: LeafletService) {
+        this.loadingService.updateLoading(false);
+    }
 
     ngOnInit() {
         // Permet d'initialiser la map avec leaflet
@@ -43,10 +44,14 @@ export class AirportListComponent implements OnInit {
                 setTimeout(
                     () => {
                         this.loadingService.updateLoading(true);
-                        this.loading = true;
+                        this.loaded = true;
                     }, 1000
                 );
             }
         );
+    }
+
+    ngOnDestroy() {
+        this.airportsSubscription.unsubscribe();
     }
 }

@@ -16,7 +16,7 @@ export class MapService {
     marker: any;
 
     // Permet d'initialiser la map static qui sera présente dans la page de détails d'un aéroport
-    loadStaticMap(coords: number[], zoom: number) {
+    loadStaticMap() {
         // Permet d'initialiser la map
         this.map = new Map({
             // Permet de cibler la balise html qui va être remplacé par la map
@@ -32,11 +32,20 @@ export class MapService {
                 })
             ],
             view: new View({
-                // Permet d'initialiser le centre de la map et le zoom. Ici le centre est sur un aéroport spécifique et le zoom est à 10 (passé en paramètre lors de l'appel de la fonction)
-                center: fromLonLat(coords),
-                zoom
+                // Permet d'initialiser le centre de la map et le zoom.
+                // Ici le centre est sur un aéroport spécifique et le zoom est à 10 (passé en paramètre lors de l'appel de la fonction)
+                center: fromLonLat([0, 0]),
+                zoom: 10
             })
         });
+    }
+
+    // Permet de mettre à jour les coordonnées du centre de la map quand on clic sur un autre aéroport
+    changeMapCenter(coords: number[]) {
+        this.map.getView().setCenter(transform(coords, 'EPSG:4326', 'EPSG:3857'));
+    }
+
+    createMarker(coords: number[]) {
         // Permet d'initialiser le marker
         this.marker = new Feature({
             geometry: new Point(
@@ -63,10 +72,6 @@ export class MapService {
         this.map.addLayer(markerVectorLayer);
     }
 
-    // Permet de mettre à jour les coordonnées du centre de la map quand on clic sur un autre aéroport
-    changeMapCenter(coords: number[]) {
-        this.map.getView().setCenter(transform(coords, 'EPSG:4326', 'EPSG:3857'));
-    }
     // Permet de mettre à jour les coordonnées du centre du marker quand on clic sur un autre aéroport
     changeMarkerCenter(coords: number[]) {
         this.marker.getGeometry().setCoordinates(transform(coords, 'EPSG:4326', 'EPSG:3857'));
