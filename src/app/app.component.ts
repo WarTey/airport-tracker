@@ -14,7 +14,7 @@ export class AppComponent {
     loading = false;
 
     constructor(private loadingService: LoadingService) {
-        // Web app's Firebase configuration
+        // Configuration de Firebase
         const firebaseConfig = {
             apiKey: 'AIzaSyD83xKoJKtuuH2enK7iHSXYutt3dQizx4M',
             authDomain: 'airport-tracker-179c5.firebaseapp.com',
@@ -24,7 +24,7 @@ export class AppComponent {
             messagingSenderId: '304653827453',
             appId: '1:304653827453:web:9d4e76468e1cbc61112014'
         };
-        // Initialize Firebase
+        // Initialise Firebase
         firebase.initializeApp(firebaseConfig);
 
         this.loadingSubscription = this.loadingService.loadingSubject.subscribe(
