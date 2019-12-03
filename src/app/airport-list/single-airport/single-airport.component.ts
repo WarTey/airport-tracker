@@ -3,6 +3,7 @@ import { MapService } from '../../services/map.service';
 import {ActivatedRoute} from '@angular/router';
 import {AirportsService} from '../../services/airports.service';
 import {Subscription} from 'rxjs';
+import {FavoritesService} from '../../services/favorites.service';
 
 @Component({
     selector: 'app-single-airport',
@@ -16,7 +17,10 @@ export class SingleAirportComponent implements OnInit, OnDestroy {
     airport: any = [];
     firstLoad = false;
 
-    constructor(private mapService: MapService, private route: ActivatedRoute, private airportsService: AirportsService) { }
+    constructor(private mapService: MapService,
+                private route: ActivatedRoute,
+                private airportsService: AirportsService,
+                private favoritesService: FavoritesService) { }
 
     ngOnInit() {
         this.airportICAO = this.route.snapshot.params.icao;
@@ -38,6 +42,18 @@ export class SingleAirportComponent implements OnInit, OnDestroy {
     onReload(event) {
         this.airportICAO = event;
         this.airportsService.getAirportDetails(this.airportICAO);
+    }
+
+    onSave() {
+        this.favoritesService.addFavorite(this.airportICAO);
+    }
+
+    onDelete() {
+        this.favoritesService.removeFavorite(this.airportICAO);
+    }
+
+    inFavorite() {
+        return this.favoritesService.checkFavorite(this.airportICAO);
     }
 
     ngOnDestroy() {

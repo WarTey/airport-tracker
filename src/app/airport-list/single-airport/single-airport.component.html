@@ -12,4 +12,8 @@
         <div id="map" class="map"></div>
     </div>
 </div>
+<div class="text-left">
+    <button *ngIf="!inFavorite()" class="btn btn-primary" type="submit" (click)="onSave()">Ajouter aux favoris</button>
+    <button *ngIf="inFavorite()" class="btn btn-danger" type="submit" (click)="onDelete()">Retirer des favoris</button>
+</div>
 <app-flight-list [airportICAO]="airportICAO" (eventICAO)="onReload($event)" [airportName]="airport.name"></app-flight-list>
