@@ -5,6 +5,7 @@ import {Router} from '@angular/router';
 @Injectable()
 export class LeafletService {
     private map: any;
+    private markers: any = [];
 
     constructor(private router: Router) { }
 
@@ -20,7 +21,7 @@ export class LeafletService {
             iconSize: [20, 20],
             iconUrl: 'assets/airplane.png',
         });
-        const marker = L.marker([coords[0], coords[1]], {icon: myIcon}).bindPopup(
+        this.markers.push(L.marker([coords[0], coords[1]], {icon: myIcon}).bindPopup(
             '<div>' +
                 '<strong>' + name + '</strong>' +
                 '<p>' +
@@ -28,9 +29,16 @@ export class LeafletService {
                     '<br>' +
                     country +
                 '</p>' +
-            '<div/>').addTo(this.map).on('click', e => { this.router.navigate(['details/' + icao]); });
-        marker.on('mouseover', event => {
+            '<div/>').addTo(this.map).on('click', e => { this.router.navigate(['details/' + icao]); }));
+        this.markers[this.markers.length - 1].on('mouseover', event => {
             event.target.openPopup();
         });
+    }
+
+    clearIcon() {
+        for (const element of this.markers) {
+            element.remove();
+        }
+        this.markers = [];
     }
 }

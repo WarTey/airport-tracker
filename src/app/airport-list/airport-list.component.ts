@@ -13,7 +13,11 @@ import {LeafletService} from '../services/leaflet.service';
 
 export class AirportListComponent implements OnInit, OnDestroy {
     airportsSubscription: Subscription;
+    airports: any = [];
     loaded = false;
+    refreshMap = false;
+    searchString: string;
+    searchResults: string[] = [];
 
     // Constructeur de la classe
     constructor(private http: HttpClient,
@@ -32,15 +36,8 @@ export class AirportListComponent implements OnInit, OnDestroy {
         // Création d'un sujet
         this.airportsSubscription = this.airportsService.airportsSubject.subscribe(
             (airports: any[]) => {
-                for (const element of airports) {
-                    this.leafletService.addIcon(
-                        [element.lat, element.lon],
-                        element.name,
-                        element.city,
-                        element.state,
-                        element.country,
-                        element.icao);
-                }
+                this.airports = airports;
+                this.AddMarkersToMap(airports);
                 setTimeout(
                     () => {
                         this.loadingService.updateLoading(true);
@@ -49,6 +46,56 @@ export class AirportListComponent implements OnInit, OnDestroy {
                 );
             }
         );
+    }
+
+    onSearch() {
+        let iteration = 0;
+        if (this.searchString.length < 3) {
+            this.refreshMap = true;
+        }
+        this.searchResults = [];
+        this.leafletService.clearIcon();
+        for (const element of this.airports) {
+            if (this.searchString.length === 0) {
+                this.searchResults = [];
+                this.AddMarkersToMap(this.airports);
+                break;
+            } else if (element.name.toLowerCase().includes(this.searchString.toLowerCase())) {
+                if (iteration < 6 && element.name.length !== this.searchString.length) {
+                    this.searchResults.push(element.name);
+                    iteration += 1;
+                }
+                this.leafletService.addIcon(
+                    [element.lat, element.lon],
+                    element.name,
+                    element.city,
+                    element.state,
+                    element.country,
+                    element.icao);
+            }
+        }
+        setTimeout(
+            () => {
+                this.refreshMap = false;
+            }, 1000
+        );
+    }
+
+    alertEvent(event) {
+        this.searchString = event.target.innerHTML;
+        this.onSearch();
+    }
+
+    AddMarkersToMap(airports: any) {
+        for (const element of airports) {
+            this.leafletService.addIcon(
+                [element.lat, element.lon],
+                element.name,
+                element.city,
+                element.state,
+                element.country,
+                element.icao);
+        }
     }
 
     ngOnDestroy() {

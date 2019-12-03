@@ -1,2 +1,16 @@
-<!-- Endroit ou la map avec tous les avions va s'afficher -->
-<div [hidden]="!loaded" id="map" class="map mt-5 mb-5"></div>
+<div [hidden]="!loaded">
+    <input (keyup)="onSearch()" [(ngModel)]="searchString" class="form-control mr-sm-2 mt-5" type="search" placeholder="Search" aria-label="Search">
+    <figure *ngIf="!refreshMap && searchResults.length > 0" class="highlight rounded">
+        <p (click)="alertEvent($event)" *ngFor="let element of searchResults">{{ element }}</p>
+    </figure>
+    <!-- Endroit ou la map avec tous les avions va s'afficher -->
+    <div [hidden]="refreshMap" id="map" class="map mt-5 mb-5"></div>
+
+    <div *ngIf="refreshMap">
+        <div class="text-center">
+            <div class="spinner-grow text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+</div>
