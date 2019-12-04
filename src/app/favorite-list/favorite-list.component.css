@@ -1,0 +1,8 @@
+#airport-name {
+    color: #007bff;
+}
+
+#airport-name:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
