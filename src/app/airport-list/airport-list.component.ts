@@ -1,9 +1,9 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {AirportsService} from '../services/airports.service';
-import {Subscription} from 'rxjs';
-import {LoadingService} from '../services/loading.service';
-import {LeafletService} from '../services/leaflet.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AirportsService } from '../services/airports.service';
+import { Subscription } from 'rxjs';
+import { LoadingService } from '../services/loading.service';
+import { LeafletService } from '../services/leaflet.service';
 
 @Component({
     selector: 'app-airport-list',
@@ -32,7 +32,6 @@ export class AirportListComponent implements OnInit, OnDestroy {
         this.leafletService.loadDynamicMap();
         // Permet de remplir le tableau avec les infos issue de l'api
         this.airportsService.getAirports();
-
         // Création d'un sujet
         this.airportsSubscription = this.airportsService.airportsSubject.subscribe(
             (airports: any[]) => {

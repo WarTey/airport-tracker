@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FlightsService } from '../../services/flights.service';
-import {Subject, Subscription} from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { AirportsService } from '../../services/airports.service';
 import { DataTableDirective } from 'angular-datatables';
 
@@ -13,17 +13,17 @@ import { DataTableDirective } from 'angular-datatables';
 export class FlightListComponent implements OnInit, OnDestroy, AfterViewInit {
     @ViewChild(DataTableDirective, {static: false})
     dtElement: DataTableDirective;
-    dtOptions: DataTables.Settings = {};
+    dtOptions: DataTables.Settings = { };
     dtTrigger = new Subject();
     tableLoaded = false;
 
-    flightsSubscription: Subscription;
-    flightList: any = [];
     @Input() airportICAO: string;
     @Input() airportName: string;
     @Output() eventICAO = new EventEmitter();
-    airportSubscription: Subscription;
-    airport: any = [];
+    airportsSubscription: Subscription;
+    flightsSubscription: Subscription;
+    airports: any = [];
+    flights: any = [];
 
     constructor(private flightsService: FlightsService, private airportsService: AirportsService) { }
 
@@ -36,13 +36,14 @@ export class FlightListComponent implements OnInit, OnDestroy, AfterViewInit {
         this.flightsService.getFlights(this.airportICAO);
         this.flightsSubscription = this.flightsService.flightsSubject.subscribe(
             (flights: any) => {
-                this.flightList = flights;
-                this.airportsService.getAirportArrival(this.flightList);
+                this.flights = flights;
+                this.airportsService.getAirportArrival(this.flights);
             }
         );
-        this.airportSubscription = this.airportsService.airportArrivalSubject.subscribe(
+
+        this.airportsSubscription = this.airportsService.airportArrivalSubject.subscribe(
             (airport: any) => {
-                this.airport = airport;
+                this.airports = airport;
                 if (this.tableLoaded) {
                     this.rerender();
                 }
@@ -69,7 +70,7 @@ export class FlightListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnDestroy() {
         this.flightsSubscription.unsubscribe();
-        this.airportSubscription.unsubscribe();
+        this.airportsSubscription.unsubscribe();
         this.dtTrigger.unsubscribe();
     }
 }

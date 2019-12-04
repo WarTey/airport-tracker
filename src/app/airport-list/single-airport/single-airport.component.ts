@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MapService } from '../../services/map.service';
-import {ActivatedRoute} from '@angular/router';
-import {AirportsService} from '../../services/airports.service';
-import {Subscription} from 'rxjs';
-import {FavoritesService} from '../../services/favorites.service';
-import {LoadingService} from '../../services/loading.service';
-import {ToastrService} from '../../services/toastr.service';
-import {AuthService} from '../../services/auth.service';
+import { ActivatedRoute } from '@angular/router';
+import { AirportsService } from '../../services/airports.service';
+import { Subscription } from 'rxjs';
+import { FavoritesService } from '../../services/favorites.service';
+import { LoadingService } from '../../services/loading.service';
+import { ToastrService } from '../../services/toastr.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-single-airport',
@@ -19,8 +19,8 @@ export class SingleAirportComponent implements OnInit, OnDestroy {
     airportSubscription: Subscription;
     isAuthSubscription: Subscription;
     airport: any = [];
-    loaded = false;
     isAuth: boolean;
+    loaded = false;
 
     constructor(private mapService: MapService,
                 private route: ActivatedRoute,
@@ -39,6 +39,7 @@ export class SingleAirportComponent implements OnInit, OnDestroy {
                 this.isAuth = auth;
             }
         );
+
         this.airportICAO = this.route.snapshot.params.icao;
         this.airportsService.getAirportDetails(this.airportICAO);
         this.mapService.loadStaticMap();

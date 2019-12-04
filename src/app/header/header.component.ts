@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ToastrService } from '../services/toastr.service';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-header',
@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     isAuthSubscription: Subscription;
     isAuth: boolean;
 
-    constructor(private authService: AuthService, private toastr: ToastrService) {}
+    constructor(private authService: AuthService, private toastr: ToastrService) { }
 
     ngOnInit() {
         this.authService.checkConnection();

@@ -21,11 +21,13 @@ import { DataTablesModule } from 'angular-datatables';
 import { MapService } from './services/map.service';
 import { AirportsService } from './services/airports.service';
 import { FavoritesService } from './services/favorites.service';
-import {LoadingService} from './services/loading.service';
-import {LeafletService} from './services/leaflet.service';
+import { LoadingService } from './services/loading.service';
+import { LeafletService } from './services/leaflet.service';
+import { FavoriteListComponent } from './favorite-list/favorite-list.component';
 
 const appRoutes: Routes = [
     { path: '', component: AirportListComponent },
+    { path: 'favoris', canActivate: [NotLoggedGuardService], component: FavoriteListComponent },
     { path: 'details/:icao', component: SingleAirportComponent },
     { path: 'connexion', canActivate: [LoggedGuardService], component: SignInComponent },
     { path: 'inscription', canActivate: [LoggedGuardService], component: SignUpComponent },
@@ -42,7 +44,8 @@ const appRoutes: Routes = [
         FourOhFourComponent,
         AirportListComponent,
         SingleAirportComponent,
-        FlightListComponent
+        FlightListComponent,
+        FavoriteListComponent
     ],
     imports: [
         BrowserModule,

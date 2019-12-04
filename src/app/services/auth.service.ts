@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import {Subject} from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -12,13 +12,13 @@ export class AuthService {
         return new Promise(
             (resolve, reject) => {
                 firebase.auth().signInWithEmailAndPassword(email, password).then(
-                    // Si l'email et le mot de passe corresponde à un champ dans la bdd alors le visiteur se connecte
                     () => {
+                        // Si l'email et le mot de passe corresponde à un champ dans la bdd alors le visiteur se connecte
                         resolve();
                         this.checkConnection();
                     },
-                    // Sinon une erreur est retourné
                     (error) => {
+                        // Sinon une erreur est retourné
                         reject(error);
                     }
                 );
@@ -31,14 +31,14 @@ export class AuthService {
         return new Promise(
             (resolve, reject) => {
                 firebase.auth().createUserWithEmailAndPassword(email, password).then(
-                    // Si l'email et le mot de passe on été bien saisi et qu'ils n'existe pas dans la bdd
-                    // alors un compte est crée pour le visiteur
                     () => {
+                        // Si l'email et le mot de passe on été bien saisi et qu'ils n'existe pas dans la bdd
+                        // alors un compte est crée pour le visiteur
                         resolve();
                         this.checkConnection();
                     },
-                    // Sinon une erreur est retourné
                     (error) => {
+                        // Sinon une erreur est retourné
                         reject(error);
                     }
                 );
