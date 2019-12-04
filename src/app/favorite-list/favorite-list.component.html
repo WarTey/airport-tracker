@@ -1,5 +1,5 @@
-<div [hidden]="!loaded" class="mt-5 mb-5">
-    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+<div class="mt-5 mb-5">
+    <table [hidden]="!tableLoaded" datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
         <thead>
             <tr>
                 <th>Nom</th>
@@ -14,7 +14,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let element of airports">
-                <td>{{ element.name }}</td>
+                <td (click)="onReload(element.icao)" id="airport-name">{{ element.name }}</td>
                 <td>{{ element.code }}</td>
                 <td>{{ element.icao }}</td>
                 <td>{{ element.city }}</td>
@@ -27,4 +27,5 @@
             </tr>
         </tbody>
     </table>
+    <p [hidden]="tableLoaded" class="text-center text-danger mt-5 font-italic font-weight-bold">Chargement en cours... Si ce dernier est trop long merci de recharger la page.</p>
 </div>

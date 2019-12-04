@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import * as firebase from 'firebase';
 import { LoadingService } from './services/loading.service';
 import { Subscription } from 'rxjs';
@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
     styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnDestroy {
     loadingSubscription: Subscription;
     loading = false;
 
@@ -36,5 +36,9 @@ export class AppComponent {
                 this.loading = loading;
             }
         );
+    }
+
+    ngOnDestroy() {
+        this.loadingSubscription.unsubscribe();
     }
 }
