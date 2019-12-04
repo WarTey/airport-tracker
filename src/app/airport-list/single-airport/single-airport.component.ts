@@ -1,9 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MapService } from '../../services/map.service';
-import {ActivatedRoute} from '@angular/router';
-import {AirportsService} from '../../services/airports.service';
-import {Subscription} from 'rxjs';
-import {FavoritesService} from '../../services/favorites.service';
+import { ActivatedRoute } from '@angular/router';
+import { AirportsService } from '../../services/airports.service';
+import { Subscription } from 'rxjs';
+import { FavoritesService } from '../../services/favorites.service';
+import { LoadingService } from '../../services/loading.service';
+import { ToastrService } from '../../services/toastr.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-single-airport',
@@ -14,25 +17,45 @@ import {FavoritesService} from '../../services/favorites.service';
 export class SingleAirportComponent implements OnInit, OnDestroy {
     airportICAO: string;
     airportSubscription: Subscription;
+    isAuthSubscription: Subscription;
     airport: any = [];
-    firstLoad = false;
+    isAuth: boolean;
+    loaded = false;
 
     constructor(private mapService: MapService,
                 private route: ActivatedRoute,
                 private airportsService: AirportsService,
-                private favoritesService: FavoritesService) { }
+                private favoritesService: FavoritesService,
+                private loadingService: LoadingService,
+                private toastr: ToastrService,
+                private authService: AuthService) {
+        this.loadingService.updateLoading(false);
+    }
 
     ngOnInit() {
+        this.authService.checkConnection();
+        this.isAuthSubscription = this.authService.isAuthSubject.subscribe(
+            (auth: boolean) => {
+                this.isAuth = auth;
+            }
+        );
+
         this.airportICAO = this.route.snapshot.params.icao;
         this.airportsService.getAirportDetails(this.airportICAO);
+        this.mapService.loadStaticMap();
         this.airportSubscription = this.airportsService.airportDetailsSubject.subscribe(
             (airport: any) => {
                 this.airport = airport[0];
-                if (!this.firstLoad) {
-                    this.mapService.loadStaticMap([this.airport.lon, this.airport.lat], 10);
-                    this.firstLoad = true;
+                this.mapService.changeMapCenter([this.airport.lon, this.airport.lat]);
+                if (!this.loaded) {
+                    this.mapService.createMarker([this.airport.lon, this.airport.lat]);
+                    setTimeout(
+                        () => {
+                            this.loadingService.updateLoading(true);
+                            this.loaded = true;
+                        }, 1000
+                    );
                 } else {
-                    this.mapService.changeMapCenter([this.airport.lon, this.airport.lat]);
                     this.mapService.changeMarkerCenter([this.airport.lon, this.airport.lat]);
                 }
             }
@@ -46,10 +69,12 @@ export class SingleAirportComponent implements OnInit, OnDestroy {
 
     onSave() {
         this.favoritesService.addFavorite(this.airportICAO);
+        this.toastr.toastrSuccess('Favoris', this.airport.name + ' ajouté aux favoris.');
     }
 
     onDelete() {
         this.favoritesService.removeFavorite(this.airportICAO);
+        this.toastr.toastrError('Favoris', this.airport.name + ' retiré des favoris.');
     }
 
     inFavorite() {
@@ -58,5 +83,6 @@ export class SingleAirportComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.airportSubscription.unsubscribe();
+        this.isAuthSubscription.unsubscribe();
     }
 }

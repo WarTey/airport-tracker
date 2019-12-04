@@ -14,13 +14,13 @@ export class LoggedGuardService implements CanActivate {
             (resolve, reject) => {
                 firebase.auth().onAuthStateChanged(
                     (user) => {
-                        // Si la personne est connectée alors elle n'a pas accès à la page de connection et d'inscription et est redirigé via la route not-found
                         if (user) {
+                            // Si la personne est connectée alors elle n'a pas accès à la page de connection et d'inscription
+                            // et est redirigé via la route not-found
                             this.router.navigate(['not-found']);
                             resolve(false);
-                        }
-                        // Si la personne n'est pas connectée alors elle a accès à la page de connection et d'inscription
-                        else {
+                        } else {
+                            // Si la personne n'est pas connectée alors elle a accès à la page de connection et d'inscription
                             resolve(true);
                         }
                     }

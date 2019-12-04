@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import * as firebase from 'firebase';
 import { ToastrService } from '../services/toastr.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-header',
@@ -9,15 +9,17 @@ import { ToastrService } from '../services/toastr.service';
     styleUrls: ['./header.component.css']
 })
 
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+    isAuthSubscription: Subscription;
     isAuth: boolean;
 
-    constructor(private authService: AuthService, private toastr: ToastrService) {}
+    constructor(private authService: AuthService, private toastr: ToastrService) { }
 
     ngOnInit() {
-        firebase.auth().onAuthStateChanged(
-            (user) => {
-                this.isAuth = !!user;
+        this.authService.checkConnection();
+        this.isAuthSubscription = this.authService.isAuthSubject.subscribe(
+            (auth: boolean) => {
+                this.isAuth = auth;
             }
         );
     }
@@ -25,5 +27,9 @@ export class HeaderComponent implements OnInit {
     onSignOut() {
         this.toastr.toastrSuccess('Déconnexion', 'À bientôt de vous revoir.');
         this.authService.signOut();
+    }
+
+    ngOnDestroy() {
+        this.isAuthSubscription.unsubscribe();
     }
 }

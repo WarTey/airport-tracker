@@ -1,0 +1,30 @@
+<div [hidden]="!loaded" class="mt-5 mb-5">
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="row-border hover">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>IATA</th>
+                <th>ICAO</th>
+                <th>Ville</th>
+                <th>État</th>
+                <th>Pays</th>
+                <th>Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let element of airports">
+                <td>{{ element.name }}</td>
+                <td>{{ element.code }}</td>
+                <td>{{ element.icao }}</td>
+                <td>{{ element.city }}</td>
+                <td>{{ element.state }}</td>
+                <td>{{ element.country }}</td>
+                <td>{{ element.type }}</td>
+                <td>
+                    <button type="button" class="btn btn-danger" (click)="onDelete(element.icao, element.name)">Supprimer</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

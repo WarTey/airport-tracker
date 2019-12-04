@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import * as firebase from 'firebase';
-import {LoadingService} from './services/loading.service';
-import {Subscription} from 'rxjs';
+import { LoadingService } from './services/loading.service';
+import { Subscription } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
     selector: 'app-root',
@@ -13,7 +14,7 @@ export class AppComponent {
     loadingSubscription: Subscription;
     loading = false;
 
-    constructor(private loadingService: LoadingService) {
+    constructor(private loadingService: LoadingService, private location: Location) {
         // Configuration de Firebase
         const firebaseConfig = {
             apiKey: 'AIzaSyD83xKoJKtuuH2enK7iHSXYutt3dQizx4M',
@@ -27,6 +28,9 @@ export class AppComponent {
         // Initialise Firebase
         firebase.initializeApp(firebaseConfig);
 
+        if (location.path() === '/connexion' || location.path() === '/inscription') {
+            this.loading = true;
+        }
         this.loadingSubscription = this.loadingService.loadingSubject.subscribe(
             (loading: boolean) => {
                 this.loading = loading;

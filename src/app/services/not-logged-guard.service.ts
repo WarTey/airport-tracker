@@ -15,12 +15,12 @@ export class NotLoggedGuardService implements CanActivate {
                 // Récupère l'état de la personne (connectée ou non )
                 firebase.auth().onAuthStateChanged(
                     (user) => {
-                        // Si la personne est connectée alors elle a accès à la route
                         if (user) {
+                            // Si la personne est connectée alors elle a accès à la route
                             resolve(true);
-                        }
-                        // Si la personne n'est pas connectée alors elle n'a pas accès à la route et est redirigée vers la page de connexion
-                        else {
+                        } else {
+                            // Si la personne n'est pas connectée
+                            // alors elle n'a pas accès à la route et est redirigée vers la page de connexion
                             this.router.navigate(['connexion']);
                             resolve(false);
                         }

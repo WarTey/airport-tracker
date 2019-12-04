@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import * as firebase from 'firebase';
-import {Favorite} from '../models/favorite.model';
+import { Favorite } from '../models/favorite.model';
 import DataSnapshot = firebase.database.DataSnapshot;
 
 @Injectable()
@@ -47,10 +47,16 @@ export class FavoritesService {
         });
     }
 
-    checkFavorite(icao: string) {
+    checkFavorite(icao: string, id?: string) {
         for (const element of this.favorites) {
-            if (element.icao === icao && element.id === firebase.auth().currentUser.uid) {
-                return true;
+            if (id) {
+                if ((element.icao === icao && element.id === firebase.auth().currentUser.uid && element.id === id)) {
+                    return true;
+                }
+            } else  {
+                if ((element.icao === icao && element.id === firebase.auth().currentUser.uid)) {
+                    return true;
+                }
             }
         }
         return false;
