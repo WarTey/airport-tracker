@@ -6,6 +6,7 @@ import {Subscription} from 'rxjs';
 import {FavoritesService} from '../../services/favorites.service';
 import {LoadingService} from '../../services/loading.service';
 import {ToastrService} from '../../services/toastr.service';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
     selector: 'app-single-airport',
@@ -16,19 +17,28 @@ import {ToastrService} from '../../services/toastr.service';
 export class SingleAirportComponent implements OnInit, OnDestroy {
     airportICAO: string;
     airportSubscription: Subscription;
+    isAuthSubscription: Subscription;
     airport: any = [];
     loaded = false;
+    isAuth: boolean;
 
     constructor(private mapService: MapService,
                 private route: ActivatedRoute,
                 private airportsService: AirportsService,
                 private favoritesService: FavoritesService,
                 private loadingService: LoadingService,
-                private toastr: ToastrService) {
+                private toastr: ToastrService,
+                private authService: AuthService) {
         this.loadingService.updateLoading(false);
     }
 
     ngOnInit() {
+        this.authService.checkConnection();
+        this.isAuthSubscription = this.authService.isAuthSubject.subscribe(
+            (auth: boolean) => {
+                this.isAuth = auth;
+            }
+        );
         this.airportICAO = this.route.snapshot.params.icao;
         this.airportsService.getAirportDetails(this.airportICAO);
         this.mapService.loadStaticMap();
@@ -72,5 +82,6 @@ export class SingleAirportComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.airportSubscription.unsubscribe();
+        this.isAuthSubscription.unsubscribe();
     }
 }
