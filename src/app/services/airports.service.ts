@@ -11,20 +11,25 @@ export class AirportsService {
     airportArrivalSubject = new Subject<any>();
     airportsSubject = new Subject<any>();
 
+    // Constructeur de la classe
     constructor(private http: HttpClient) { }
 
+    // Permet de mettre à jour les sujets de airportDetails
     emitAirportDetails() {
         this.airportDetailsSubject.next(this.airportDetails);
     }
 
+    // Permet de mettre à jour les sujets de airportArrival
     emitAirportArrival() {
         this.airportArrivalSubject.next(this.airportArrival);
     }
 
+    // Permet de mettre à jour les sujets de airports
     emitAirports() {
         this.airportsSubject.next(this.airports);
     }
 
+    // Permet de récupérer un aéroport grace à son icao
     getAirportDetails(icao: string) {
         this.http.get<any>(
             'https://gist.githubusercontent.com/tdreyno/4278655/raw/7b0762c09b519f40397e4c3e100b097d861f5588/airports.json')
@@ -36,6 +41,7 @@ export class AirportsService {
             });
     }
 
+    // Permet de récupérer l'aéroport d'arrivé par rapport à un vol qui est passé en paramètre
     getAirportArrival(flights: any) {
         this.http.get<any>(
             'https://gist.githubusercontent.com/tdreyno/4278655/raw/7b0762c09b519f40397e4c3e100b097d861f5588/airports.json')
@@ -53,6 +59,7 @@ export class AirportsService {
             });
     }
 
+    // Permet de récupérer tous les aéroports
     getAirports() {
         this.http.get<any>(
             'https://gist.githubusercontent.com/tdreyno/4278655/raw/7b0762c09b519f40397e4c3e100b097d861f5588/airports.json'

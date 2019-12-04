@@ -9,20 +9,24 @@ export class FavoritesService {
     private favorites: Favorite[] = [];
     favoritesSubject = new Subject<Favorite[]>();
 
+    // Constructeur de la classe
     constructor() {
         this.getFavorites();
     }
 
+    // Permet de mettre à jour les sujets
     emitFavorites() {
         this.favoritesSubject.next(this.favorites);
     }
 
+    // Permet d'ajouter un aéroport a un tableau local
     addFavorite(icao: string) {
         this.favorites.push(new Favorite(firebase.auth().currentUser.uid, icao));
         this.saveFavorites();
         this.emitFavorites();
     }
 
+    // Permet de supprimer un aéroport de son tableau local
     removeFavorite(icao: string) {
         const favoriteIndexToRemove = this.favorites.findIndex(
             (favoriteEl) => {
@@ -36,10 +40,12 @@ export class FavoritesService {
         this.emitFavorites();
     }
 
+    // Permet d'envoyer le nouveau tableau de favoris à Firebase
     saveFavorites() {
         firebase.database().ref('/favorites').set(this.favorites);
     }
 
+    // Permet de récupérer tous les favoris
     getFavorites() {
         firebase.database().ref('/favorites').on('value', (data: DataSnapshot) => {
             this.favorites = data.val() ? data.val() : [];
@@ -47,6 +53,7 @@ export class FavoritesService {
         });
     }
 
+    // Permet de vérifier si un aéroport est dans notre liste de favoris (grâce à son icao)
     checkFavorite(icao: string, id?: string) {
         for (const element of this.favorites) {
             if (id) {

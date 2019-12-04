@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class LoadingService {
+    // Permet de créer le loader
     private loading: boolean;
     loadingSubject = new Subject<boolean>();
 

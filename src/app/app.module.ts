@@ -25,6 +25,7 @@ import { LoadingService } from './services/loading.service';
 import { LeafletService } from './services/leaflet.service';
 import { FavoriteListComponent } from './favorite-list/favorite-list.component';
 
+// Différentes routes du site
 const appRoutes: Routes = [
     { path: '', component: AirportListComponent },
     { path: 'favoris', canActivate: [NotLoggedGuardService], component: FavoriteListComponent },

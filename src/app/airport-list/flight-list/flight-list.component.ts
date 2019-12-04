@@ -25,19 +25,22 @@ export class FlightListComponent implements OnInit, OnDestroy, AfterViewInit {
     airports: any = [];
     flights: any = [];
 
+    // Constructeur de la classe
     constructor(private flightsService: FlightsService, private airportsService: AirportsService) { }
 
     ngOnInit() {
+        // Permet d'initialiser DataTables
         this.dtOptions = {
             pagingType: 'full_numbers',
             pageLength: 25
         };
 
+        // Permet de récupérer les vols
         this.flightsService.getFlights(this.airportICAO);
         this.flightsSubscription = this.flightsService.flightsSubject.subscribe(
             (flights: any) => {
                 this.flights = flights;
-                this.airportsService.getAirportArrival(this.flights);
+                this.airportsService.getAirportArrival(this.flights); // Permet de récupérer les aéroports d'arrivées
             }
         );
 
@@ -45,7 +48,7 @@ export class FlightListComponent implements OnInit, OnDestroy, AfterViewInit {
             (airport: any) => {
                 this.airports = airport;
                 if (this.tableLoaded) {
-                    this.rerender();
+                    this.rerender(); // Permet de recharger le tableau dynamiquement
                 }
             }
         );
@@ -56,6 +59,7 @@ export class FlightListComponent implements OnInit, OnDestroy, AfterViewInit {
         this.tableLoaded = true;
     }
 
+    // Permet de recharger le tableau dynamiquement
     rerender() {
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
             dtInstance.destroy();

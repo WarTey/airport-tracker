@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     isAuthSubscription: Subscription;
     isAuth: boolean;
 
+    // Constructeur de la classe
     constructor(private authService: AuthService, private toastr: ToastrService) { }
 
     ngOnInit() {
@@ -25,6 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     onSignOut() {
+        // Message dans un toastr qui apparait lors de la déconnexion
         this.toastr.toastrSuccess('Déconnexion', 'À bientôt de vous revoir.');
         this.authService.signOut();
     }

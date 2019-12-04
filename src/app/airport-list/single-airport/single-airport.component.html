@@ -2,6 +2,7 @@
     <h1 class="text-center mt-3">{{ airport.name }}</h1>
     <div class="row mt-5">
         <div class="col-6">
+            <!-- Informations détaillées sur l'aéroport -->
             <p>IATA : <span class="font-italic font-weight-bolder">{{ airport.code }}</span></p>
             <p>ICAO : <span class="font-italic font-weight-bolder">{{ airport.icao }}</span></p>
             <p>Ville : <span class="font-italic font-weight-bolder">{{ airport.city }}</span></p>
@@ -10,12 +11,15 @@
             <p>Type : <span class="font-italic font-weight-bolder">{{ airport.type }}</span></p>
         </div>
         <div class="col-6">
-            <div id="map" class="map"></div>
+            <div id="map" class="map"></div> <!-- map centré sur l'aéroport avec un marker -->
         </div>
     </div>
     <div class="text-left" *ngIf="isAuth">
+        <!-- Si l'aéroport n'est pas dans les favoris alors on affiche le bouton 'Ajouter aux favoris' -->
         <button *ngIf="!inFavorite()" class="btn btn-primary" (click)="onSave()">Ajouter aux favoris</button>
+        <!-- Si l'aéroport est dans les favoris alors on affiche le bouton 'Retirer des favoris' -->
         <button *ngIf="inFavorite()" class="btn btn-danger" (click)="onDelete()">Retirer des favoris</button>
     </div>
+    <!-- Permet d'afficher le tableau avec le détails des vols de l'aéroport -->
     <app-flight-list [airportICAO]="airportICAO" (eventICAO)="onReload($event)" [airportName]="airport.name"></app-flight-list>
 </div>

@@ -47,8 +47,10 @@ export class AirportListComponent implements OnInit, OnDestroy {
         );
     }
 
+    // Fonction qui permet de gérer la barre de recherche
     onSearch() {
         let iteration = 0;
+        // Permet de mettre un loader si le nombre de caractères tapé dans la requête comporte moins de 3 caractères
         if (this.searchString.length < 3) {
             this.refreshMap = true;
         }
@@ -57,6 +59,7 @@ export class AirportListComponent implements OnInit, OnDestroy {
         for (const element of this.airports) {
             if (this.searchString.length === 0) {
                 this.searchResults = [];
+                // Permet d'ajouter les markers à la map
                 this.AddMarkersToMap(this.airports);
                 break;
             } else if (element.name.toLowerCase().includes(this.searchString.toLowerCase())) {
@@ -79,12 +82,13 @@ export class AirportListComponent implements OnInit, OnDestroy {
             }, 1000
         );
     }
-
+    // Permet de mettre à jour la barre de recherche lorsque l'on clic sur un résultat
     alertEvent(event) {
         this.searchString = event.target.innerHTML;
         this.onSearch();
     }
 
+    // Permet d'ajouter les markers à la map
     AddMarkersToMap(airports: any) {
         for (const element of airports) {
             this.leafletService.addIcon(
