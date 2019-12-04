@@ -5,6 +5,7 @@ import {AirportsService} from '../../services/airports.service';
 import {Subscription} from 'rxjs';
 import {FavoritesService} from '../../services/favorites.service';
 import {LoadingService} from '../../services/loading.service';
+import {ToastrService} from '../../services/toastr.service';
 
 @Component({
     selector: 'app-single-airport',
@@ -22,7 +23,8 @@ export class SingleAirportComponent implements OnInit, OnDestroy {
                 private route: ActivatedRoute,
                 private airportsService: AirportsService,
                 private favoritesService: FavoritesService,
-                private loadingService: LoadingService) {
+                private loadingService: LoadingService,
+                private toastr: ToastrService) {
         this.loadingService.updateLoading(false);
     }
 
@@ -56,10 +58,12 @@ export class SingleAirportComponent implements OnInit, OnDestroy {
 
     onSave() {
         this.favoritesService.addFavorite(this.airportICAO);
+        this.toastr.toastrSuccess('Favoris', this.airport.name + ' ajouté aux favoris.');
     }
 
     onDelete() {
         this.favoritesService.removeFavorite(this.airportICAO);
+        this.toastr.toastrError('Favoris', this.airport.name + ' retiré des favoris.');
     }
 
     inFavorite() {
